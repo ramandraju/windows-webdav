@@ -17,12 +17,12 @@ describe('WebDAV class', () => {
       it('should resolve when mount is successful', async () => {
         const mockMountOptions: MountOptions = {
           diskName: 'Z',
-          webdavPath: '\\example\\path',
+          webdavPath: 'example\\path',
           userName: 'user',
           password: 'pass',
         };
   
-        const expectedMountCMD = 'net use Z: \\example\\path pass /user:user';
+        const expectedMountCMD = 'net use Z: example\\path pass /user:user';
         jest.spyOn(webdav, '_checkForWindowsPlatform').mockReturnValue(true);
   
         const execMock = exec as unknown as jest.Mock;
@@ -30,14 +30,14 @@ describe('WebDAV class', () => {
           callback(null, 'stdout', '');
         });
   
-        await expect(webdav.mountDisk(mockMountOptions)).resolves.toBe('stdout');
+        await expect(webdav.mountDisk(mockMountOptions)).resolves.toBe("Disk Z mounted sucessfully");
         expect(execMock).toHaveBeenCalledWith(expectedMountCMD, expect.any(Function));
       });
   
       it('should reject when mount fails', async () => {
         const mockMountOptions: MountOptions = {
           diskName: 'Z',
-          webdavPath: '\\example\\path',
+          webdavPath: 'example\\path',
           userName: 'user',
           password: 'pass',
         };
@@ -47,7 +47,7 @@ describe('WebDAV class', () => {
         execMock.mockImplementation((_cmd, callback) => {
           callback(new Error('Mount error'), '', 'stderr');
         });  
-        await expect(webdav.mountDisk(mockMountOptions)).rejects.toThrow('Mount error');
+        await expect(webdav.mountDisk(mockMountOptions)).rejects.toThrow("Unable to mount Disk Z, Please check config");
       });
     });
 
@@ -63,7 +63,7 @@ describe('WebDAV class', () => {
           callback(null, 'stdout', '');
         });
     
-        await expect(webdav.unMountDisk(mockunMountOptions)).resolves.toBe('stdout');
+        await expect(webdav.unMountDisk(mockunMountOptions)).resolves.toBe("Disk Z unmounted sucessfully");
         expect(execMock).toHaveBeenCalledWith(expectedMountCMD, expect.any(Function));
       });
     
@@ -76,7 +76,7 @@ describe('WebDAV class', () => {
         execMock.mockImplementation((_cmd, callback) => {
           callback(new Error('unMount error'), '', 'stderr');
         });  
-        await expect(webdav.unMountDisk(mockunMountOptions)).rejects.toThrow('unMount error');
+        await expect(webdav.unMountDisk(mockunMountOptions)).rejects.toThrow('Unable to unmount Disk Z, Please check config');
       });
     });
 });

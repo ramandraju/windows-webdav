@@ -9,9 +9,9 @@ class WebDAV {
                 let mountCMD = this._prepareMountCMD(mountOptions);
                 exec(mountCMD, (error, stdout, stderr) => {
                     if (error || stderr) {
-                        reject({msg: `Unable to mount Disk ${mountOptions.diskName}, Please check config`});
+                        reject(new Error(`Unable to mount Disk ${mountOptions.diskName}, Please check config`));
                     } else {
-                        resolve({msg: `Disk ${mountOptions.diskName} mounted sucessfully`});
+                        resolve(`Disk ${mountOptions.diskName} mounted sucessfully`);
                     }
                 });
             } else {
@@ -26,9 +26,9 @@ class WebDAV {
                 let unMountCMD = this._prepareUnMountCMD(unMountOptions);
                 exec(unMountCMD, (error, stdout, stderr) => {
                     if (error || stderr) {
-                        reject({msg: `Unable to unmount Disk ${unMountOptions.diskName}, Please check config`});
+                        reject(new Error(`Unable to unmount Disk ${unMountOptions.diskName}, Please check config`));
                     } else {
-                        resolve({msg: `Disk ${unMountOptions.diskName} unmounted sucessfully`});
+                        resolve(`Disk ${unMountOptions.diskName} unmounted sucessfully`);
                     }
                 });
             } else {
@@ -39,11 +39,7 @@ class WebDAV {
 
     _prepareMountCMD = (mountOptions: MountOptions) => {
         let mountCMD = `net use ${mountOptions.diskName}:`;
-        if (mountOptions.webdavPath?.startsWith('\\\\')) {
-            mountCMD = mountCMD + ` ${mountOptions.webdavPath}`
-        } else {
-            mountCMD = mountCMD + ` \\\\${mountOptions.webdavPath}`
-        }
+        mountCMD = mountCMD + ` ${mountOptions.webdavPath}`        
         if (mountOptions.userName && mountOptions.password) {
             mountCMD = mountCMD + ` ${mountOptions.password} /user:${mountOptions.userName}`
         }
