@@ -1,7 +1,7 @@
 {
   "name": "windows-webdav",
   "version": "1.0.0",
-  "description": "Node Utility to launch cloud drives as local disk",
+  "description": "Node Utility to launch webdav servers as network drive in windows system.",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest --config ./src/jest.config.ts --coverage",
